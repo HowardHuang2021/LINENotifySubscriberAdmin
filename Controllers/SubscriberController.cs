@@ -21,27 +21,27 @@ namespace LINENotifySubscriberAdmin.Controllers
             return Ok(await _context.Subscribers.ToListAsync());
         }
 
-        [HttpGet("{id}", Name = "GetSubscriberById")]
-        public async Task<IActionResult> GetSubscriberById(int id)
-        {
-            var sub = await _context.Subscribers.FindAsync(id);
-            if (sub == null)
-            {
-                return NotFound();
-            }
-            return Ok(sub);
-        }
+        //[HttpGet("{id}", Name = "GetSubscriberById")]
+        //public async Task<IActionResult> GetSubscriberById(int id)
+        //{
+        //    var sub = await _context.Subscribers.FindAsync(id);
+        //    if (sub == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(sub);
+        //}
 
-        [HttpPost(Name = "AddSubscriber")]
-        public async Task<IActionResult> AddSubscriber([FromBody] Subscriber subscriber)
-        {
-            await _context.Subscribers.AddAsync(subscriber);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetSubscriberById),
-                new { id = subscriber.Id },
-                subscriber
-                );
-        }
+        //[HttpPost(Name = "AddSubscriber")]
+        //public async Task<IActionResult> AddSubscriber([FromBody] Subscriber subscriber)
+        //{
+        //    await _context.Subscribers.AddAsync(subscriber);
+        //    await _context.SaveChangesAsync();
+        //    return CreatedAtAction(nameof(GetSubscriberById),
+        //        new { id = subscriber.Id },
+        //        subscriber
+        //        );
+        //}
 
         [HttpPut("{id}", Name = "UpdateSubscriber")]
         public async Task<IActionResult> UpdateSubscriber(int id, [FromBody] Subscriber subscriber)
