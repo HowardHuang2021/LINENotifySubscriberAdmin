@@ -14,7 +14,10 @@ namespace LINENotifySubscriberAdmin.Controllers
         private readonly IConfiguration _config;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly SubscriberContext _context;
-        public LINENotifyController(IConfiguration configuration, IHttpClientFactory httpClientFactory, SubscriberContext context)
+        public LINENotifyController(
+            IConfiguration configuration, 
+            IHttpClientFactory httpClientFactory, 
+            SubscriberContext context)
         {
             _config = configuration;
             _httpClientFactory = httpClientFactory;
@@ -114,7 +117,7 @@ namespace LINENotifySubscriberAdmin.Controllers
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", input.AccessToken);
 
-            var keyValuePairs = new List<KeyValuePair<string?, string?>>
+            var keyValuePairs = new List<KeyValuePair<string, string>>
             {
                 new("message", message)
             };
@@ -129,6 +132,40 @@ namespace LINENotifySubscriberAdmin.Controllers
                 string responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
                 throw new Exception(responseContent);
             }
+
+            return Ok();
+        }
+
+        [HttpPost("revoke")]
+        public async Task<IActionResult> Revoke()
+        {
+            var input = _context.Subscribers.Where(a => a.Username == "test").FirstOrDefault();
+            if (input == null)
+            {
+                return NotFound();
+            }
+
+            if (string.IsNullOrWhiteSpace(input.AccessToken))
+            {
+                return BadRequest();
+            }
+
+            using var client = _httpClientFactory.CreateClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", input.AccessToken);
+
+            const string notifyEndpoint = "https://notify-api.line.me/api/revoke";
+
+            using var httpResponseMessage = await client.PostAsync(notifyEndpoint, null);
+
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                string responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
+                throw new Exception(responseContent);
+            }
+
+            _context.Subscribers.Remove(input);
+            await _context.SaveChangesAsync();
 
             return Ok();
         }
