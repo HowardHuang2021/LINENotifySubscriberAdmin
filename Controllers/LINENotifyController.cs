@@ -100,7 +100,7 @@ namespace LINENotifySubscriberAdmin.Controllers
         }
 
         [HttpPost("notify")]
-        public async Task<IActionResult> Notify(string message)
+        public async Task<IActionResult> Notify([FromBody] Message message)
         {
             var input = _context.Subscribers.Where(a => a.Username == "test").FirstOrDefault();
             if (input == null)
@@ -108,7 +108,7 @@ namespace LINENotifySubscriberAdmin.Controllers
                 return NotFound();
             }
 
-            if (string.IsNullOrWhiteSpace(input.AccessToken) || string.IsNullOrWhiteSpace(message))
+            if (string.IsNullOrWhiteSpace(input.AccessToken))
             {
                 return BadRequest();
             }
@@ -119,7 +119,9 @@ namespace LINENotifySubscriberAdmin.Controllers
 
             var keyValuePairs = new List<KeyValuePair<string, string>>
             {
-                new("message", message)
+                new("message", message.message),
+                new("stickerPackageId", message.stickerPackageId),
+                new("stickerId", message.stickerId),
             };
 
             const string notifyEndpoint = "https://notify-api.line.me/api/notify";
