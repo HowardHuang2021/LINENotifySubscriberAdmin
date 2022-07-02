@@ -88,7 +88,7 @@ namespace LINENotifySubscriberAdmin.Controllers
             var subscriber = new Subscriber()
             {
                 Username = "test",
-                AccessToken = tokenResponse.AccessToken,
+                LINENotifyAccessToken = tokenResponse.AccessToken,
             };
             await _context.Subscribers.AddAsync(subscriber);
             await _context.SaveChangesAsync();
@@ -108,14 +108,14 @@ namespace LINENotifySubscriberAdmin.Controllers
                 return NotFound();
             }
 
-            if (string.IsNullOrWhiteSpace(input.AccessToken))
+            if (string.IsNullOrWhiteSpace(input.LINENotifyAccessToken))
             {
                 return BadRequest();
             }
 
             using var client = _httpClientFactory.CreateClient();
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", input.AccessToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", input.LINENotifyAccessToken);
 
             var keyValuePairs = new List<KeyValuePair<string, string>>
             {
@@ -147,14 +147,14 @@ namespace LINENotifySubscriberAdmin.Controllers
                 return NotFound();
             }
 
-            if (string.IsNullOrWhiteSpace(input.AccessToken))
+            if (string.IsNullOrWhiteSpace(input.LINENotifyAccessToken))
             {
                 return BadRequest();
             }
 
             using var client = _httpClientFactory.CreateClient();
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", input.AccessToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", input.LINENotifyAccessToken);
 
             const string notifyEndpoint = "https://notify-api.line.me/api/revoke";
 

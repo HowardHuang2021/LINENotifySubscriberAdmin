@@ -43,32 +43,32 @@ namespace LINENotifySubscriberAdmin.Controllers
         //        );
         //}
 
-        [HttpPut("{id}", Name = "UpdateSubscriber")]
-        public async Task<IActionResult> UpdateSubscriber(int id, [FromBody] Subscriber subscriber)
-        {
-            var sub = await _context.Subscribers.FindAsync(id);
-            if (sub == null)
-            {
-                return NotFound();
-            }
-            sub.Username = subscriber.Username;
-            sub.AccessToken = subscriber.AccessToken;
-            await _context.SaveChangesAsync();
+        //[HttpPut("{id}", Name = "UpdateSubscriber")]
+        //public async Task<IActionResult> UpdateSubscriber(int id, [FromBody] Subscriber subscriber)
+        //{
+        //    var sub = await _context.Subscribers.FindAsync(id);
+        //    if (sub == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    sub.Username = subscriber.Username;
+        //    sub.AccessToken = subscriber.AccessToken;
+        //    await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        [HttpDelete("{id}", Name = "DeleteSubscriber")]
-        public async Task<IActionResult> DeleteSubscriber(int id)
-        {
-            var sub = await _context.Subscribers.FindAsync(id);
-            if (sub == null)
-            {
-                return NotFound();
-            }
-            _context.Subscribers.Remove(sub);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
+        //[HttpDelete("{id}", Name = "DeleteSubscriber")]
+        //public async Task<IActionResult> DeleteSubscriber(int id)
+        //{
+        //    var sub = await _context.Subscribers.FindAsync(id);
+        //    if (sub == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _context.Subscribers.Remove(sub);
+        //    await _context.SaveChangesAsync();
+        //    return Ok();
+        //}
     }
 }
